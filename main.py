@@ -2,21 +2,38 @@
 import requests
 import datetime
 
-def ping_backend():
-    url = "https://keep-me-alive.org/ping" #replace this url with your backend url & endpoint
-    
+# List of URLs to keep alive - replace these with your actual server URLs
+URLS_TO_PING = [
+    "https://askmypdf-ai-powered-pdf-chat.onrender.com",
+    "https://refactora-ai.onrender.com", 
+    "https://vibeconnect-k1te.onrender.com/",
+    "https://echobrain-ai-powered-second-brain.onrender.com/"
+]
+
+def ping_backend(url):
     try:
         print(f"{datetime.datetime.now()}: Pinging {url}")
         response = requests.get(url, timeout=30)
         print(f"Response: {response.status_code}")
         
         if response.status_code == 200:
-            print("Backend is alive")
+            print(f"✅ {url} is alive")
         else:
-            print(f"⚠️ Unexpected status code: {response.status_code}")
+            print(f"⚠️ {url} returned unexpected status code: {response.status_code}")
             
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"❌ Error pinging {url}: {e}")
+
+def ping_all_backends():
+    print(f"Starting to ping {len(URLS_TO_PING)} servers...")
+    print("=" * 50)
+    
+    for i, url in enumerate(URLS_TO_PING, 1):
+        print(f"\n[{i}/{len(URLS_TO_PING)}] Checking server:")
+        ping_backend(url)
+    
+    print("\n" + "=" * 50)
+    print("Finished pinging all servers")
 
 if __name__ == "__main__":
-    ping_backend()  # Just ping once, then exit
+    ping_all_backends()
